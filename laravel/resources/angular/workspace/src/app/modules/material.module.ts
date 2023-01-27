@@ -30,7 +30,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatButtonModule } from '@angular/material/button';
 import { MatTreeModule } from '@angular/material/tree';
-import { MatPseudoCheckboxModule } from '@angular/material/core';
+import { MatNativeDateModule, MatPseudoCheckboxModule } from '@angular/material/core';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 
 @NgModule({
@@ -102,5 +102,9 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
 		MatCheckboxModule,
 		BrowserAnimationsModule,
 	],
+	providers: [
+		MatDatepickerModule,
+		MatNativeDateModule
+	]
 })
 export class MaterialImportModule {}

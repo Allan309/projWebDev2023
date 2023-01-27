@@ -1,0 +1,54 @@
+<h2>S'enregistrer</h2>
+<form [formGroup]="form" class="d-flex flex-column">
+	<mat-form-field>
+		<mat-label>Pseudo</mat-label>
+		<input type="text" matInput formControlName="pseudo" maxlength="30">
+		<mat-hint>{{ 30 - (form.get("pseudo")?.value.length ?? 0) }} restants</mat-hint>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>E-mail</mat-label>
+		<input type="email" matInput formControlName="email">
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Mot de passe</mat-label>
+		<input type="password" matInput formControlName="password">
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Confirmation mot de passe</mat-label>
+		<input type="password" matInput formControlName="passwordConfirm">
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Nom</mat-label>
+		<input type="text" matInput formControlName="nom" maxlength="30">
+		<mat-hint>{{ 30 - (form.get("nom")?.value.length ?? 0) }} restants</mat-hint>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Prénom</mat-label>
+		<input type="text" matInput formControlName="prenom" maxlength="30">
+		<mat-hint>{{ 30 - (form.get("prenom")?.value.length ?? 0) }} restants</mat-hint>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Nationalité</mat-label>
+		<mat-select formControlName="nationalite">
+			<mat-option value="Belge">Belge</mat-option>
+			<mat-option value="Francais">Francais</mat-option>
+			<mat-option value="Luxembourgeois">Luxembourgeois</mat-option>
+			<mat-option value="Autre">Autre</mat-option>
+		</mat-select>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Adresse</mat-label>
+		<input type="text" matInput formControlName="adresse" maxlength="60">
+		<mat-hint>{{ 60 - (form.get("adresse")?.value.length ?? 0) }} restants</mat-hint>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Téléphone</mat-label>
+		<input type="tel" matInput formControlName="tel">
+	</mat-form-field>
+	<mat-form-field appearance="fill">
+		<mat-label>Date de naissance</mat-label>
+		<input type="date" matInput formControlName="date_naissance">
+	  </mat-form-field>
+</form>
+
+<button class="btn btn-primary" (click)="register()" [disabled]="form.invalid || loading">REGISTER</button>

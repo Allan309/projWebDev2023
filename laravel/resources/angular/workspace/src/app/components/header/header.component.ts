@@ -13,7 +13,11 @@ import {
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { TokenUser } from 'src/app/models/TokenUser';
+import { AuthService } from 'src/app/services/auth.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
 	selector: 'app-header',
@@ -22,8 +26,16 @@ import { Subscription } from 'rxjs';
 })
 export class HeaderComponent implements OnInit, OnDestroy {
 	private subs: Subscription[] = [];
+	tokenUser?: TokenUser;
+	assetsUrl = environment.assetsUrl;
 
-	constructor(public dialog: MatDialog) {}
+	constructor(private authService: AuthService, private router: Router) {
+		this.subs.push(
+			this.authService.$getTokenUser().subscribe(_ => {
+				this.tokenUser = _;
+			})
+		)
+	}
 
 	ngOnInit() {}
 
@@ -31,5 +43,20 @@ export class HeaderComponent implements OnInit, OnDestroy {
 		this.subs.forEach((sub) => {
 			sub.unsubscribe();
 		});
+	}
+
+	gotoProfile() {
+		this.router.navigate(["user/settings"])
+	}
+	gotoAds() {
+		this.router.navigate(["user/myAds"])
+	}
+	gotoLogin() {
+		this.router.navigate(["/auth"])
+	}
+	logout() {
+		this.subs.push(
+			this.authService.logout().subscribe()
+		)
 	}
 }
