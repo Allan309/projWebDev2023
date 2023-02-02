@@ -1,0 +1,58 @@
+<div class="container-fluid">
+	<h2>Modification d'une annonce</h2>
+	<form [formGroup]="form" class="d-flex flex-column">
+		<mat-form-field>
+			<mat-label>description</mat-label>
+			<input type="text" matInput formControlName="description">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Puissance</mat-label>
+			<input type="number" matInput formControlName="puissance">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Année</mat-label>
+			<input type="number" matInput formControlName="annee">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Marque</mat-label>
+			<input type="text" matInput formControlName="marque">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Modèle</mat-label>
+			<input type="text" matInput formControlName="modele">
+		</mat-form-field>
+		<mat-form-field>
+			<mat-label>Prix</mat-label>
+			<input type="number" matInput formControlName="prix">
+		</mat-form-field>
+		
+		<div class="row">
+			<div class="form-group col-12 col-md-6">
+				<label for="image">Image</label><br />
+				<input
+					type="file"
+					accept="image/*"
+					(change)="onFileSelected($event)"
+				/>
+			</div>
+			<div class="col-12 col-md-6">
+				Image actuelle:<br />
+				<img
+					[src]="currentImage"
+					style="max-width: 250px; max-height: 250px"
+				/>
+			</div>
+		</div>
+		<div class="row mt-3">
+			<div class="col-6">
+				<button class="btn btn-outline-success w-100"
+					(click)="submit()"
+					[disabled]="form.invalid || loading">ENVOYER</button>
+			</div>
+			<div class="col-6" *ngIf="id != 0">
+				<button class="btn btn-danger w-100"
+					(click)="deleteAd()" >DELETE</button>
+			</div>
+		</div>
+	</form>
+</div>

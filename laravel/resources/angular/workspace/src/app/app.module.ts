@@ -20,6 +20,9 @@ import { library } from '@fortawesome/fontawesome-svg-core';
 import { fab } from '@fortawesome/free-brands-svg-icons';
 import { fas } from '@fortawesome/free-solid-svg-icons';
 import { far } from '@fortawesome/free-regular-svg-icons';
+import { AdEditComponent } from './components/ad/adEdit/adEdit.component';
+import { AdListComponent } from './components/ad/adList/adList.component';
+import { AdShowComponent } from './components/ad/show/show.component';
 
 library.add(fas, far, fab);
 
@@ -33,6 +36,9 @@ library.add(fas, far, fab);
     RegisterComponent,
     AuthComponent,
     SnackbarComponent,
+    AdEditComponent,
+    AdListComponent,
+    AdShowComponent
   ],
   imports: [
     BrowserModule,

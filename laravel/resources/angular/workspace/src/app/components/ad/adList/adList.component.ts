@@ -15,29 +15,31 @@ import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { Ad } from 'src/app/models/Ad';
 import { TokenUser } from 'src/app/models/TokenUser';
+import { AdService } from 'src/app/services/ad.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
 
 @Component({
-	selector: 'app-header',
-	templateUrl: 'header.component.html',
-	styleUrls: ['header.component.scss'],
+	selector: 'app-ad-list',
+	templateUrl: 'adList.component.html',
+	styleUrls: ['adList.component.scss'],
 })
-export class HeaderComponent implements OnInit, OnDestroy {
+export class AdListComponent implements OnInit, OnDestroy {
 	private subs: Subscription[] = [];
-	tokenUser?: TokenUser;
 	assetsUrl = environment.assetsUrl;
+	ads: Ad[] = [];
 
-	constructor(private authService: AuthService, private router: Router) {
+	constructor(private authService: AuthService, private adService: AdService, private router: Router) {}
+
+	ngOnInit() {
 		this.subs.push(
-			this.authService.$getTokenUser().subscribe(_ => {
-				this.tokenUser = _;
+			this.adService.getList(this.router.url == "user/myads").subscribe(_ => {
+				this.ads = _;
 			})
 		)
 	}
-
-	ngOnInit() {}
 
 	ngOnDestroy(): void {
 		this.subs.forEach((sub) => {
@@ -45,18 +47,7 @@ export class HeaderComponent implements OnInit, OnDestroy {
 		});
 	}
 
-	gotoProfile() {
-		this.router.navigate(["user/settings"])
-	}
-	gotoAds() {
-		this.router.navigate(["user/myAds"])
-	}
-	gotoLogin() {
-		this.router.navigate(["/auth"])
-	}
-	logout() {
-		var sub = this.authService.logout().subscribe(_ => {
-			sub.unsubscribe();
-		})
+	gotoId(id: number) {
+		this.router.navigate(["ad/"+ id]);
 	}
 }

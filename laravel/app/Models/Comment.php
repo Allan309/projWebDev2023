@@ -7,8 +7,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\User;
+use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Models
+class Comment extends Model
 {
 
     /**
@@ -22,4 +24,14 @@ class Comment extends Models
         'ad_id',
         'comment_id',
     ];
+
+    public function annonce()
+    {
+        return $this->belongsTo(user::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(user::class);
+    }
 }

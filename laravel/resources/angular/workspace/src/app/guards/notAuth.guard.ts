@@ -3,7 +3,7 @@ import { Router, ActivatedRouteSnapshot, RouterStateSnapshot } from '@angular/ro
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuard {
+export class NotAuthGuard {
   /**
    * Constructor
    * @param router The router object
@@ -20,13 +20,10 @@ export class AuthGuard {
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
   ) {
-    if (
-      localStorage.getItem('USER')
-    ) { return true; }
-    localStorage.removeItem('access_token');
-    this.router.navigate(['/auth'], {
-      skipLocationChange: true
-    });
+    if (!localStorage.getItem('USER')) {
+        return true;
+    }
+    this.router.navigate(["/"])
     return false;
   }
 }

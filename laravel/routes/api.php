@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\AdController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,9 +16,22 @@ use App\Http\Controllers\AuthController;
 |
 */
 
-Route::POST("/login", [AuthController::class, "login"]);
-Route::POST("/register", [AuthController::class, "register"]);
-Route::GET("/logout", [AuthController::class, "logout"]);
+Route::group(['excluded_middleware' => 'jwt.auth'], function () {
+	Route::POST("/login", [AuthController::class, "login"]);
+	Route::POST("/register", [AuthController::class, "register"]);
+});
 
-Route::middleware('auth:api')->get('/', function (Request $request) {
+Route::group(['middleware' => 'jwt.auth'], function () {
+	Route::GET("/logout", [AuthController::class, "logout"]);
+});
+
+Route::group(['prefix' => "ad"], function () {
+	Route::GET("", [AdController::class, "get"]);
+	Route::GET("{ad}", [AdController::class, "getById"]);
+	Route::group(['middleware' => 'jwt.auth'], function () {
+		Route::GET("byUser", [AdController::class, "get"]);
+		Route::PUT("insertOrUpdate", [AdController::class, "insertOrUpdate"]);
+		Route::post("addImage/{ad}", [AdController::class, "addImage"]);
+		Route::DELETE("{ad}", [AdController::class, "delete"]);
+	});
 });

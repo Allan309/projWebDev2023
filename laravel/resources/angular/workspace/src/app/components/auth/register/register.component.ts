@@ -54,7 +54,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	}
 
 	register() {
-		console.log(this.form.value);
 		if (this.form.invalid || this.loading) {
 			return;
 		}
@@ -63,7 +62,6 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		}
 
 		this.authService.register(this.form.value).subscribe(_ => {
-			console.log(_);
 		})
 	}
 }

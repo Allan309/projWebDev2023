@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit, OnDestroy {
 	private subs: Subscription[] = [];
 
 	form: FormGroup = new FormGroup({
-		email: new FormControl('', [Validators.required, Validators.email]),
-		password: new FormControl('', [Validators.required, Validators.minLength(8)]),
+		email: new FormControl('allan309@mail.com', [Validators.required, Validators.email]),
+		password: new FormControl('azerty123', [Validators.required, Validators.minLength(8)]),
 	})
 
 	constructor(private authService: AuthService) {}

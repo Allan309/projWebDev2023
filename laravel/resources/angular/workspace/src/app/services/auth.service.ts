@@ -16,9 +16,12 @@ export class AuthService {
 
   private $tokenUser: BehaviorSubject<TokenUser | undefined> =
     new BehaviorSubject<TokenUser | undefined>(undefined);
-  public $getTokenUser(): Observable<TokenUser | undefined> {
-    return this.$tokenUser.asObservable();
-  }
+    public $getTokenUser(): Observable<TokenUser | undefined> {
+      return this.$tokenUser.asObservable();
+    }
+    public getTokenUser(): TokenUser | undefined {
+      return this.$tokenUser.value;
+    }
   public setTokenUser(tokenUser: TokenUser) {
     this.$tokenUser.next(tokenUser);
   }

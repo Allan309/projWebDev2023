@@ -28,85 +28,80 @@ export class AuthInterceptor implements HttpInterceptor {
 		req: HttpRequest<any>,
 		next: HttpHandler
 	): Observable<HttpEvent<any>> {
-		console.log(req.url);
-		
 		if (AnonymousUrl.find((url) => req.url.includes(url))) {
 			return next.handle(req);
 		}
 
-		return this.authService.$getTokenUser().pipe(
-			filterNullOrUndefined(),
-			switchMap((authUser) => {
-				let handle = null;
-				if (authUser?.access_token) {
-					const tokenUser: any = JWT<{}>(authUser.access_token);
-					const tokenExpired =
-						new Date(+tokenUser.exp * 1000) <= new Date(); // - (new Date().getTimezoneOffset() * 60000)
-					if (!tokenExpired) {
-						const newHeaders = req.headers.set(
-							'Authorization',
-							`${authUser.token_type} ${authUser.access_token}`
-						);
+		var authUser = this.authService.getTokenUser();
+		if(!authUser) {
+			return next.handle(req);
+		} else {
+			return this.authService.$getTokenUser().pipe(
+				filterNullOrUndefined(),
+				switchMap((authUser) => {
+					let handle = null;
+					
+					if (authUser?.access_token) {
+						const tokenUser: any = JWT<{}>(authUser.access_token);
+						const tokenExpired =
+							new Date(+tokenUser.exp * 1000) <= new Date(); // - (new Date().getTimezoneOffset() * 60000)
+						if (!tokenExpired) {
+							const newHeaders = req.headers.set(
+								'Authorization',
+								`${authUser.token_type} ${authUser.access_token}`
+							);
 
-						const copiedReq = req.clone({ headers: newHeaders });
+							const copiedReq = req.clone({ headers: newHeaders });
 
-						handle = next.handle(copiedReq);
+							handle = next.handle(copiedReq);
+						} else {
+							handle = next.handle(req);
+						}
 					} else {
 						handle = next.handle(req);
 					}
-				} else {
-					handle = next.handle(req);
-				}
-				let showToast = true;
-				return handle.pipe(
-					catchError((err) => {
-						console.error(err);
-						if (err instanceof HttpErrorResponse) {
-							if (err.status === 401) {
-								if (authUser?.access_token) {
-									const tokenUser: any = JWT(
-										authUser.access_token
-									);
-									const tokenExpired =
-										new Date(+tokenUser.exp * 1000) <=
-										new Date();
-									if (!tokenExpired) {
+					let showToast = true;
+					return handle.pipe(
+						catchError((err) => {
+							console.error(err);
+							if (err instanceof HttpErrorResponse) {
+								if (err.status === 401) {
+									if (authUser?.access_token) {
+										const tokenUser: any = JWT(
+											authUser.access_token
+										);
+										const tokenExpired =
+											new Date(+tokenUser.exp * 1000) <=
+											new Date();
+										if (!tokenExpired) {
+											this.router.navigate(['/auth']);
+										}
+									} else {
+										// TODO open login google popup
 										this.router.navigate(['/auth']);
 									}
-								} else {
-									// TODO open login google popup
-									this.router.navigate(['/auth']);
-								}
-								return EMPTY;
-							} else if (
-								err.status === 422 &&
-								!!err.error?.errors
-							) {
-								const errors = err.error.errors;
-								Object.keys(errors).forEach((key) => {
+									return EMPTY;
+								} else if (
+									err.status === 500 &&
+									!!err?.error?.message
+								) {
+									console.error(err);
 									this.toasterService.queueSnackBar(
-										errors[key].join('<br>')
+										'Erreur: ' + err.error.message
 									);
-								});
-								showToast = false;
-							} else if (
-								err.status === 500 &&
-								!!err?.error?.message
-							) {
-								this.toasterService.queueSnackBar(
-									'Erreur: ' + err.error.message
-								);
-								showToast = false;
+									showToast = false;
+								}
 							}
-						}
 
-						this.toasterService.queueSnackBar(
-							'HTTP Error: ' + err.message
-						);
-						return throwError(() => err);
-					})
-				);
-			})
-		);
+							this.toasterService.queueSnackBar(
+								'HTTP Error: ' + err.message
+							);
+							return throwError(() => err);
+						})
+					);
+				})
+			);
+
+		}
 	}
 }

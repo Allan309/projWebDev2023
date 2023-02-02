@@ -7,10 +7,13 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
+use App\Models\Comment;
 
-class Ad extends Models
+class Ad extends Model
 {
-
+	protected $table = "ad";
     /**
      * The attributes that are mass assignable.
      *
@@ -26,4 +29,14 @@ class Ad extends Models
         'user_id',
         'prix',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(user::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
