@@ -37,7 +37,7 @@ export class AdEditComponent implements OnInit, OnDestroy {
 	loading = false;
 	id = 0;
 	currentImage: any;
-	setDeflautImage = true;
+	setDeflautImage = false;
 
 	constructor(private adService: AdService, private router: Router, private activatedRoute: ActivatedRoute, private toasterService: ToasterService, private imageCompressService: NgxImageCompressService) {
 		this.initForm(null);
@@ -52,7 +52,7 @@ export class AdEditComponent implements OnInit, OnDestroy {
 		} else {
 			this.subs.push(
 				this.adService.getById(this.id).subscribe((ad: Ad) => {
-					this.currentImage = ad?.url_image;
+					this.currentImage = environment.assetsUrl + ad?.url_image;
 					this.initForm(ad);
 				})
 			)
@@ -87,14 +87,14 @@ export class AdEditComponent implements OnInit, OnDestroy {
 		this.adService.insertOrUpdate(formValue).pipe(
 			switchMap((ad: Ad) => {
 				if(this.form.get("image")?.value) {
-					return this.adService.addImage(this.form.get("image")?.value, this.id);
+					return this.adService.addImage(this.form.get("image")?.value, ad.id);
 				} else {
-					return of({} as Ad);
+					return of(ad);
 				}
 			}),
 		).subscribe((_: Ad) => {
 			this.toasterService.queueSnackBar("Annonce modifiée");
-			this.router.navigate(["/ad/"+ this.form.get("id")?.value])
+			this.router.navigate(["/ad/"+ _.id])
 		})
 	}
 

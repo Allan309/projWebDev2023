@@ -23,6 +23,8 @@ import { far } from '@fortawesome/free-regular-svg-icons';
 import { AdEditComponent } from './components/ad/adEdit/adEdit.component';
 import { AdListComponent } from './components/ad/adList/adList.component';
 import { AdShowComponent } from './components/ad/show/show.component';
+import { UserEditComponent } from './components/user/edit/edit.component';
+import { AdListFiltreComponent } from './components/ad/adList/filtre/filtre.component';
 
 library.add(fas, far, fab);
 
@@ -38,7 +40,9 @@ library.add(fas, far, fab);
     SnackbarComponent,
     AdEditComponent,
     AdListComponent,
-    AdShowComponent
+    AdShowComponent,
+    UserEditComponent,
+    AdListFiltreComponent
   ],
   imports: [
     BrowserModule,

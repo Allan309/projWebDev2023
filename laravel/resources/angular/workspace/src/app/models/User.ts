@@ -1,3 +1,5 @@
+import { Role } from "./Role";
+
 export interface User {
 	id: number;
 	pseudo: string;
@@ -9,7 +11,8 @@ export interface User {
 	tel: string;
 	date_naissance: Date;
 	url_image: string;
-	isAdmin: boolean;
+	role_id: number;
+	role: Role;
 	created_at: Date;
 	updated_at: Date;
 }

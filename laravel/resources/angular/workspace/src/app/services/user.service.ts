@@ -7,38 +7,28 @@ import { filterNullOrUndefined } from '../utils/filterNullOrUndefined';
 import { Router } from '@angular/router';
 import { ToasterService } from './toaster.service';
 import { Ad } from '../models/Ad';
+import { User } from '../models/User';
 
 
 @Injectable({
   providedIn: 'root'
 })
-export class AdService {
+export class UserService {
 
 	constructor(private http: HttpClient) {}
 
-	getList(formValue: any, byUser: number | null) {
-		var url = "/ad";
-		if(byUser) {
-			url += "/byUser/"+ byUser;
-		}
-		return this.http.post<Ad[]>(environment.apiBaseUrl + url, formValue);
-	}
-
-	getById(id: number) {
-		return this.http.get<Ad>(environment.apiBaseUrl + "/ad/byId/"+ id);
-	}
-
-	insertOrUpdate(formValue: any) {
-		return this.http.put<Ad>(environment.apiBaseUrl + "/ad/insertOrUpdate", formValue);
+	update(formValue: any) {
+		return this.http.put<User>(environment.apiBaseUrl + "/user", formValue);
 	}
 
 	addImage(image: Blob, id: number) {
 		const formData = new FormData();
 		formData.append('image', image);
-		return this.http.post<Ad>(environment.apiBaseUrl + "/ad/addImage/"+ id, formData);
+		
+		return this.http.post<User>(environment.apiBaseUrl + "/user/addImage", formData);
 	}
 
 	delete(id: any): Observable<any> {
-		return this.http.delete<boolean>(environment.apiBaseUrl + "/ad/"+ id);
+		return this.http.delete<boolean>(environment.apiBaseUrl + "/user");
 	}
 }

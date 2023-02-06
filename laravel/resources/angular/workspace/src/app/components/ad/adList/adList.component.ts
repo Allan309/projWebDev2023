@@ -30,21 +30,22 @@ export class AdListComponent implements OnInit, OnDestroy {
 	private subs: Subscription[] = [];
 	assetsUrl = environment.assetsUrl;
 	ads: Ad[] = [];
+	isConnected = false;
 
 	constructor(private authService: AuthService, private adService: AdService, private router: Router) {}
 
 	ngOnInit() {
-		this.subs.push(
-			this.adService.getList(this.router.url == "user/myads").subscribe(_ => {
-				this.ads = _;
-			})
-		)
+		this.isConnected = !!this.authService.getTokenUser();
 	}
 
 	ngOnDestroy(): void {
 		this.subs.forEach((sub) => {
 			sub.unsubscribe();
 		});
+	}
+
+	dataChanged(ads: Ad[]) {
+		this.ads = ads;
 	}
 
 	gotoId(id: number) {

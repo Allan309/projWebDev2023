@@ -1,18 +1,17 @@
-<div class="container-fluid">
-	<div class="row">
-		<div class="col-12 col-md-12 col-lg-4">
-			<img [src]="assetsUrl+ ad?.url_image" style="width: 100%;">
-		</div>
-		<div class="col-12 col-md-12 col-lg-8">
-			<h1>
-				{{ ad?.annee }} {{ ad?.marque }} {{ ad?.modele }}
-				<button *ngIf="isCreator" mat-icon-button color="primary" (click)="gotoEdit()">
-					<fa-icon icon="edit"></fa-icon>
-				</button>
-			</h1>
-			{{ ad?.prix }} €<br>
-			{{ ad?.puissance }} <fa-icon icon="horse"></fa-icon><br>
-			{{ ad?.description }}
-		</div>
+<div class="row">
+	<div class="col-12 col-md-12 col-lg-4">
+		<img [src]="assetsUrl+ ad?.url_image" style="width: 100%;">
+	</div>
+	<div class="col-12 col-md-12 col-lg-8">
+		<h1>
+			{{ ad?.annee }} {{ ad?.marque }} {{ ad?.modele }}
+			<button *ngIf="isCreator" mat-icon-button color="primary" (click)="gotoEdit()">
+				<fa-icon icon="edit"></fa-icon>
+			</button>
+		</h1>
+		Créé par <a [routerLink]="'/ad/byUser/'+ ad?.user_id">{{ ad?.user?.pseudo }}</a> le {{ ad?.created_at | date: "dd/MM/yyyy hh:mm" }}<br>
+		{{ ad?.prix }} €<br>
+		{{ ad?.puissance }} <fa-icon icon="horse"></fa-icon><br>
+		{{ ad?.description }}
 	</div>
 </div>

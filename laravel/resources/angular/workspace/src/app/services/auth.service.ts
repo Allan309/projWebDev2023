@@ -16,14 +16,19 @@ export class AuthService {
 
   private $tokenUser: BehaviorSubject<TokenUser | undefined> =
     new BehaviorSubject<TokenUser | undefined>(undefined);
-    public $getTokenUser(): Observable<TokenUser | undefined> {
-      return this.$tokenUser.asObservable();
-    }
-    public getTokenUser(): TokenUser | undefined {
-      return this.$tokenUser.value;
-    }
-  public setTokenUser(tokenUser: TokenUser) {
+  public $getTokenUser(): Observable<TokenUser | undefined> {
+    return this.$tokenUser.asObservable();
+  }
+  public getTokenUser(): TokenUser | undefined {
+    return this.$tokenUser.value;
+  }
+  public setTokenUser(tokenUser: TokenUser | undefined) {
     this.$tokenUser.next(tokenUser);
+    if(tokenUser === undefined) {
+      localStorage.removeItem("USER");
+    } else {
+      localStorage.setItem('USER', JSON.stringify(tokenUser));
+    }
   }
 
   constructor(private http: HttpClient,

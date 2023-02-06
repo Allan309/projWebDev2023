@@ -9,11 +9,13 @@ use Illuminate\Notifications\Notifiable;
 use PHPOpenSourceSaver\JWTAuth\Contracts\JWTSubject;
 use Laravel\Passport\HasApiTokens;
 use App\Models\Ad;
+use App\Models\Role;
 use App\Models\Comment;
 
 class User extends Authenticatable implements JWTSubject
 {
 	protected $table = "user";
+    protected $with = ['role'];
     use HasFactory, Notifiable;
 
     /**
@@ -32,7 +34,7 @@ class User extends Authenticatable implements JWTSubject
         'tel',
         'date_naissance',
         'url_image',
-        'isAdmin',
+        'role_id'
     ];
 
     protected $hidden = [
@@ -47,6 +49,11 @@ class User extends Authenticatable implements JWTSubject
     public function getJWTCustomClaims()
     {
         return [];
+    }
+
+    public function role()
+    {
+        return $this->belongsTo(Role::class);
     }
 
     public function ads()

@@ -5,6 +5,7 @@ import { AdListComponent } from './components/ad/adList/adList.component';
 import { AdShowComponent } from './components/ad/show/show.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { HomeComponent } from './components/home/home.component';
+import { UserEditComponent } from './components/user/edit/edit.component';
 import { AuthGuard } from './guards/auth.guard';
 import { NotAuthGuard } from './guards/notAuth.guard';
 
@@ -26,6 +27,11 @@ const routes: Routes = [
 		pathMatch: 'full',
 	},
 	{
+		path: 'ad/byUser/:user',
+		component: AdListComponent,
+		pathMatch: 'full',
+	},
+	{
 		path: 'ad/:id',
 		component: AdShowComponent,
 		pathMatch: 'full',
@@ -37,11 +43,15 @@ const routes: Routes = [
 		pathMatch: 'full',
 	},
 	{
-		path: 'user/myads',
+		path: 'user/data',
 		canActivate: [AuthGuard],
-		component: AdListComponent,
+		component: UserEditComponent,
 		pathMatch: 'full',
-	}
+	},
+	{
+		path: '**',
+		component: HomeComponent,
+	},
 ];
 
 @NgModule({

@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,12 +27,20 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 });
 
 Route::group(['prefix' => "ad"], function () {
-	Route::GET("", [AdController::class, "get"]);
-	Route::GET("{ad}", [AdController::class, "getById"]);
+	Route::POST("", [AdController::class, "get"]);
+	Route::POST("byUser/{userId}", [AdController::class, "get"])->where('userId', '[0-9]+');;
+	Route::GET("byId/{ad}", [AdController::class, "getById"])->where('ad', '[0-9]+');;
 	Route::group(['middleware' => 'jwt.auth'], function () {
-		Route::GET("byUser", [AdController::class, "get"]);
 		Route::PUT("insertOrUpdate", [AdController::class, "insertOrUpdate"]);
-		Route::post("addImage/{ad}", [AdController::class, "addImage"]);
-		Route::DELETE("{ad}", [AdController::class, "delete"]);
+		Route::post("addImage/{ad}", [AdController::class, "addImage"])->where('ad', '[0-9]+');;
+		Route::DELETE("{ad}", [AdController::class, "delete"])->where('ad', '[0-9]+');;
+	});
+});
+
+Route::group(['prefix' => "user"], function () {
+	Route::group(['middleware' => 'jwt.auth'], function () {
+		Route::PUT("", [UserController::class, "update"]);
+		Route::post("addImage", [UserController::class, "addImage"]);
+		Route::DELETE("", [UserController::class, "delete"]);
 	});
 });

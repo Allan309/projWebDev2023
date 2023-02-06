@@ -46,15 +46,16 @@ export class HeaderComponent implements OnInit, OnDestroy {
 	}
 
 	gotoProfile() {
-		this.router.navigate(["user/settings"])
+		this.router.navigate(["user/data"])
 	}
 	gotoAds() {
-		this.router.navigate(["user/myAds"])
+		this.router.navigate(["ad/byUser/"+ this.tokenUser?.user.id])
 	}
 	gotoLogin() {
 		this.router.navigate(["/auth"])
 	}
 	logout() {
+		localStorage.removeItem('USER');
 		var sub = this.authService.logout().subscribe(_ => {
 			sub.unsubscribe();
 		})

@@ -11,14 +11,44 @@ use Throwable;
 
 class AdController extends Controller
 {
-	public function get() {
-		$ads = Ad::get();
-		return response()->json($ads);
+	public function get(Request $request, $userId = null) {
+		$request->validate([
+			'marques'=> ['nullable', 'array'],
+			'marques.*'=> ['nullable', 'string'],
+			'yearMin' => ['required', 'integer'],
+			'yearMax' => ['required', 'integer'],
+			'priceMin' => ['required', 'integer'],
+			'priceMax' => ['required', 'integer'],
+			'puissanceMin' => ['required', 'integer'],
+			'puissanceMax' => ['required', 'integer'],
+			'order' => ["required", "string"]
+		]);
+		$req = Ad::whereIn("marque", $request->get("marques"))
+					->where("annee", ">=", $request->get("yearMin"))
+					->where("annee", "<=", $request->get("yearMax"))
+					->where("prix", ">=", $request->get("priceMin"))
+					->where("prix", "<=", $request->get("priceMax"))
+					->where("puissance", ">=", $request->get("puissanceMin"))
+					->where("puissance", "<=", $request->get("puissanceMax"));
+		if($request->get("order") == "priceDesc") {
+			$req = $req->orderBy("prix", "desc");
+		} else {
+			$req = $req->orderBy("prix");
+		}
+		if($userId != null && $userId > 0) {
+			$req = $req->where("user_id", $userId);
+		}
+		return response()->json($req->get());
 	}
 
 	public function getById(Ad $ad) {
-		$ad->user();
-		$ad->comments();
+		$ad->load("user");
+		return response()->json($ad);
+	}
+
+	public function getByUser($userId) {
+		$ads = Ad::where("user_id", $userId)->get();
+		$ad->load("user");
 		return response()->json($ad);
 	}
 
@@ -43,10 +73,12 @@ class AdController extends Controller
 				"marque" => $request->get("marque"),
 				"modele" => $request->get("modele"),
 				"prix" => $request->get("prix"),
-				"user_id" => auth()->user()->id,
 			];
-			if($request->get("setDeflautImage")) {
-				$valueToChange["url_image"] = $url_img;
+			if($request->get("id") == 0) {
+				$valueToChange["user_id"] = auth()->user()->id;
+				if($request->get("setDeflautImage")) {
+					$valueToChange["url_image"] = $url_img;
+				}
 			}
 			$ad = Ad::updateOrCreate([
 				"id" => $request->get("id")
@@ -77,7 +109,7 @@ class AdController extends Controller
 				abort(500, "Impossible d'ajouter l'image");
 			} else {
 				$ad->update([
-					"url_image" => "storage/ads/ad_". $ad->id .".jpg",
+					"url_image" => "storage/ads/ad_". $ad->id .".". $ext,
 				]);
 			}
 

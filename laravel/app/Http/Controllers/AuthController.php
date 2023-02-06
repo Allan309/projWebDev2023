@@ -4,10 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\RoleEnum;
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
+use Carbon\Carbon;
 
 class AuthController extends Controller
 {
@@ -21,18 +23,17 @@ class AuthController extends Controller
 
 		try {
 			$user = User::where('email', $request->get("email"))->first();
-
 			if($user == null) {
-				return abort(401, "Adresse e-mail ou mot de passe incorrect");
+				return abort(500, "Adresse e-mail ou mot de passe incorrect");
 			}
 			$hashedPassword = $user->password;
 			if(!password_verify($request->get("password"), $hashedPassword)) {
-				return abort(401, "Adresse e-mail ou mot de passe incorrect");
+				return abort(500, "Adresse e-mail ou mot de passe incorrect");
 			}
 
 			$credentials = request(['email', 'password']);
 			if(!$token = auth()->login($user)){
-				return response()->json(['error' => 'Unauthorized'], 401);
+				return response()->json(['error' => 'Unauthorized'], 500);
 			}
 			return response()->json($this->createNewToken($token));
 		} catch (Throwable $th) {
@@ -56,24 +57,24 @@ class AuthController extends Controller
 			'nationalite' => ['required', 'string', 'max:20'],
 			'adresse' => ['required', 'string', 'max:60'],
 			'tel' => ['required', 'string', 'max:11'],
-			'date_naissance' => ['required', 'date'],
+			'date_naissance' => ['required', 'string', 'regex:/[0-9]{2}\/[0-9]{2}\/[0-9]{4}/'],
 		]);
 
 		try {
 			$url_img = "storage/avatars/default_avatar.jpg";
 			try {
 				$user = User::create([
-					"pseudo" => $request->pseudo,
-					"password" => Hash::make($request->password),
-					"email" => $request->email,
-					"nom" => $request->nom,
-					"prenom" => $request->prenom,
-					"nationalite" => $request->nationalite,
-					"adresse" => $request->adresse,
-					"tel" => $request->tel,
-					"date_naissance" => $request->date("date_naissance"),
+					"pseudo" => $request->get("pseudo"),
+					"password" => Hash::make($request->get("password")),
+					"email" => $request->get("email"),
+					"nom" => $request->get("nom"),
+					"prenom" => $request->get("prenom"),
+					"nationalite" => $request->get("nationalite"),
+					"adresse" => $request->get("adresse"),
+					"tel" => $request->get("tel"),
+					"date_naissance" => Carbon::createFromFormat("d/m/Y", $request->string("date_naissance")),
 					"url_image" => $url_img,
-					"isAdmin" => false,
+					"role_id" => RoleEnum::INVITE
 				]);
 				return response()->json($user);
 			} catch (Throwable $th) {

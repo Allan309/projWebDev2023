@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Ad } from 'src/app/models/Ad';
+import { RoleEnum } from 'src/app/models/Role';
 import { TokenUser } from 'src/app/models/TokenUser';
 import { AdService } from 'src/app/services/ad.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -40,7 +41,8 @@ export class AdShowComponent implements OnInit, OnDestroy {
 		var id = +(this.activatedRoute.snapshot.params['id'] ?? "0");
 		var sub = this.adService.getById(id).subscribe(_ => {
 			this.ad = _;
-			this.isCreator = this.tokenUser != undefined && (this.tokenUser?.user.id == _.user_id || this.tokenUser.user.isAdmin)
+			console.log(this.tokenUser?.user);
+			this.isCreator = this.tokenUser != undefined && (this.tokenUser?.user.id == _.user_id || this.tokenUser.user.role.id == RoleEnum.ADMINISTRATEUR)
 			sub.unsubscribe();
 		})
 	}
