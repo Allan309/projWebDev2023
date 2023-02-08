@@ -1,0 +1,30 @@
+<h2>Liste des annonces</h2>
+
+<app-ad-list-filtre (data)="dataChanged($event)"></app-ad-list-filtre>
+
+<div class="row">
+	<div class="col-12 col-md-6 col-lg-4 col-xl-3 mb-2" *ngFor="let ad of ads">
+		<mat-card class="h-100">
+			<mat-card-header>
+				<mat-card-title>{{ ad.annee }} {{ ad.marque }} {{ ad.modele }}</mat-card-title>
+			</mat-card-header>
+			<img mat-card-image [src]="assetsUrl + ad.url_image">
+			<mat-card-content class="pt-2">
+				<div class="fs-5">{{ ad.prix }}€</div>
+				<div class="truncate">
+					{{ ad.description }}
+				</div>
+			</mat-card-content>
+			<mat-card-actions>
+			<button mat-button (click)="gotoId(ad.id)">
+				<fa-icon icon="eye"></fa-icon>
+				Voir plus
+			</button>
+			</mat-card-actions>
+		</mat-card>
+	</div>
+</div>
+
+<a mat-fab class="addBtn" color="primary" *ngIf="isConnected" [routerLink]="'/ad/0/edit'">
+	<fa-icon icon="plus" size="2x"></fa-icon>
+</a>

@@ -1,0 +1,19 @@
+<nav class="navbar navbar-expand bg-light mb-2">
+	<a class="ms-2 navbar-brand" href="/">AutoAllan24</a>
+
+	<div class="collapse navbar-collapse" id="navbarNav">
+		<div *ngIf="tokenUser" class="w-100 text-end">
+			{{ tokenUser.user.pseudo }}
+			<img [src]="assetsUrl + tokenUser.user.url_image" style="height:50px" class="ms-2" mat-button [matMenuTriggerFor]="menu">
+			<mat-menu #menu="matMenu">
+			  <button mat-menu-item (click)="gotoProfile()">Profil</button>
+			  <button mat-menu-item  *ngIf="isAdmin" (click)="gotoGestAdmin()">Gestion admin</button>
+			  <button mat-menu-item (click)="gotoAds()">Mes annonces</button>
+			  <button mat-menu-item (click)="logout()">Déconnexion</button>
+			</mat-menu>
+		</div>
+		<div *ngIf="!tokenUser" class="text-end w-100">
+			<button class="btn btn-outline-primary" (click)="gotoLogin()">LOGIN</button>
+		</div>
+	</div>
+</nav>

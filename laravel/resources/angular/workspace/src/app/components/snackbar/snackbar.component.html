@@ -1,0 +1,26 @@
+<div class="d-flex">
+	<div class="bell-container">
+		<span style="position: relative">
+			<fa-icon [icon]="faBell" [size]="'3x'"></fa-icon>
+			<span
+				class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+			>
+				{{ $left | async }}
+			</span>
+		</span>
+	</div>
+	<div class="d-flex align-items-center" [innerHTML]="data?.message"></div>
+</div>
+<span
+	class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-secondary"
+	style="cursor: pointer"
+	(click)="onClose()"
+>
+	<fa-icon icon="times"></fa-icon>
+</span>
+<mat-progress-bar
+	[ngClass]="{ 'progress-success': data?.type == 'success' }"
+	mode="determinate"
+	[value]="progress"
+	[color]="data.type == 'error' ? 'warn' : 'primary'"
+></mat-progress-bar>

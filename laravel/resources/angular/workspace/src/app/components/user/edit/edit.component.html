@@ -1,0 +1,99 @@
+<mat-card>
+	<mat-card-header>
+		<mat-card-title>
+			<h1>Mes données</h1>
+		</mat-card-title>
+	</mat-card-header>
+	<mat-card-content>
+		<form [formGroup]="form" class="d-flex flex-column">
+			<mat-form-field>
+				<mat-label>Pseudo</mat-label>
+				<input type="text" matInput formControlName="pseudo" maxlength="30">
+				<mat-hint>{{ 30 - (form.get("pseudo")?.value.length ?? 0) }} restants</mat-hint>
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>E-mail</mat-label>
+				<input type="email" matInput formControlName="email">
+			</mat-form-field>
+			<div class="row">
+				<div class="col-12 col-md-6">
+					<mat-form-field class="w-100">
+						<mat-label>Mot de passe (vide pour ne pas changer)</mat-label>
+						<input type="password" matInput formControlName="password">
+					</mat-form-field>
+				</div>
+				<div class="col-12 col-md-6">
+					<mat-form-field class="w-100">
+						<mat-label>Confirmation mot de passe (vide pour ne pas changer)</mat-label>
+						<input type="password" matInput formControlName="passwordConfirm">
+					</mat-form-field>
+				</div>
+				<div class="col-12 col-md-6">
+					<mat-form-field class="w-100">
+						<mat-label>Nom</mat-label>
+						<input type="text" matInput formControlName="nom" maxlength="30">
+						<mat-hint>{{ 30 - (form.get("nom")?.value.length ?? 0) }} restants</mat-hint>
+					</mat-form-field>
+				</div>
+				<div class="col-12 col-md-6">
+					<mat-form-field class="w-100">
+						<mat-label>Prénom</mat-label>
+						<input type="text" matInput formControlName="prenom" maxlength="30">
+						<mat-hint>{{ 30 - (form.get("prenom")?.value.length ?? 0) }} restants</mat-hint>
+					</mat-form-field>
+				</div>
+				<div class="col-12 col-md-6">
+					<mat-form-field class="w-100">
+						<mat-label>Date de naissance</mat-label>
+						<input matInput formControlName="date_naissance">
+					</mat-form-field>
+				</div>
+				<div class="col-12 col-md-6">
+					<mat-form-field class="w-100">
+						<mat-label>Nationalité</mat-label>
+						<mat-select formControlName="nationalite">
+							<mat-option value="Belge">Belge</mat-option>
+							<mat-option value="Francais">Francais</mat-option>
+							<mat-option value="Luxembourgeois">Luxembourgeois</mat-option>
+							<mat-option value="Autre">Autre</mat-option>
+						</mat-select>
+					</mat-form-field>
+				</div>
+			</div>
+			<mat-form-field>
+				<mat-label>Adresse</mat-label>
+				<input type="text" matInput formControlName="adresse" maxlength="60">
+				<mat-hint>{{ 60 - (form.get("adresse")?.value.length ?? 0) }} restants</mat-hint>
+			</mat-form-field>
+			<mat-form-field>
+				<mat-label>Téléphone</mat-label>
+				<input type="tel" matInput formControlName="tel">
+			</mat-form-field>
+			<div class="row">
+				<div class="form-group col-12 col-md-6">
+					<label for="image">Image</label><br />
+					<input
+						type="file"
+						accept="image/*"
+						(change)="onFileSelected($event)"
+					/>
+				</div>
+				<div class="col-12 col-md-6">
+					Image actuelle:<br />
+					<img
+						[src]="currentImage"
+						style="max-width: 250px; max-height: 250px"
+					/>
+				</div>
+			</div>
+		</form>
+		<div class="row mt-3">
+			<div class="col-6">
+				<button class="btn btn-outline-primary w-100" (click)="submit()" [disabled]="form.invalid || loading">ENVOYER</button>
+			</div>
+			<div class="col-6">
+				<button class="btn btn-danger w-100" (click)="deleteUser()">SUPPRIMER</button>
+			</div>
+		</div>
+	</mat-card-content>
+</mat-card>

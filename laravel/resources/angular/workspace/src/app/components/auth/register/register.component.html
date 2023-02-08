@@ -1,0 +1,74 @@
+<h2 mat-dialog-title>S'enregistrer</h2>
+<form [formGroup]="form" class="d-flex flex-column" mat-dialog-content>
+	<mat-form-field>
+		<mat-label>Pseudo</mat-label>
+		<input type="text" matInput formControlName="pseudo" maxlength="30" cdkFocusInitial>
+		<mat-hint>{{ 30 - (form.get("pseudo")?.value.length ?? 0) }} restants</mat-hint>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>E-mail</mat-label>
+		<input type="email" matInput formControlName="email">
+	</mat-form-field>
+	<div class="row">
+		<div class="col-12 col-md-6">
+			<mat-form-field class="w-100">
+				<mat-label>Mot de passe</mat-label>
+				<input type="password" matInput formControlName="password">
+			</mat-form-field>
+		</div>
+		<div class="col-12 col-md-6">
+			<mat-form-field class="w-100">
+				<mat-label>Confirmation mot de passe</mat-label>
+				<input type="password" matInput formControlName="passwordConfirm">
+			</mat-form-field>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12 col-md-6">
+			<mat-form-field class="w-100">
+				<mat-label>Nom</mat-label>
+				<input type="text" matInput formControlName="nom" maxlength="30">
+				<mat-hint>{{ 30 - (form.get("nom")?.value.length ?? 0) }} restants</mat-hint>
+			</mat-form-field>
+		</div>
+		<div class="col-12 col-md-6">
+			<mat-form-field class="w-100">
+				<mat-label>Prénom</mat-label>
+				<input type="text" matInput formControlName="prenom" maxlength="30">
+				<mat-hint>{{ 30 - (form.get("prenom")?.value.length ?? 0) }} restants</mat-hint>
+			</mat-form-field>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-12 col-md-6">
+			<mat-form-field class="w-100">
+				<mat-label>Nationalité</mat-label>
+				<mat-select formControlName="nationalite">
+					<mat-option value="Belge">Belge</mat-option>
+					<mat-option value="Francais">Francais</mat-option>
+					<mat-option value="Luxembourgeois">Luxembourgeois</mat-option>
+					<mat-option value="Autre">Autre</mat-option>
+				</mat-select>
+			</mat-form-field>
+		</div>
+		<div class="col-12 col-md-6">
+			<mat-form-field class="w-100">
+				<mat-label>Date de naissance (DD/MM/YYYY)</mat-label>
+				<input matInput regex="[0-9]{2}\/[0-9]{2}\/[0-9]{4}" formControlName="date_naissance">
+			</mat-form-field>
+		</div>
+	</div>
+	<mat-form-field>
+		<mat-label>Adresse</mat-label>
+		<input type="text" matInput formControlName="adresse" maxlength="60">
+		<mat-hint>{{ 60 - (form.get("adresse")?.value.length ?? 0) }} restants</mat-hint>
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Téléphone</mat-label>
+		<input type="tel" matInput formControlName="tel">
+	</mat-form-field>
+	<div class="d-flex">
+		<button class="btn btn-primary w-100" (click)="register()" [disabled]="form.invalid || loading">REGISTER</button>
+		<button class="btn btn-outline-dark w-100" mat-dialog-close>FERMER</button>
+	</div>
+</form>

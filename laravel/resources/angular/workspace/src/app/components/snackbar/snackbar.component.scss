@@ -1,0 +1,20 @@
+mat-progress-bar {
+	position: absolute;
+	bottom: 0;
+	left: 0;
+	width: 100%;
+}
+
+:host ::ng-deep .mat-snack-bar-container {
+	padding: 14px 16px 14px 0;
+}
+.bell-container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: calc(
+		100px + 14px
+	); // 14px =  snack-bar-container.padding | applied to center the bell
+	margin-left: -14px; // 14px =  snack-bar-container.padding | applied to center the bell
+	padding: 10px 0;
+}

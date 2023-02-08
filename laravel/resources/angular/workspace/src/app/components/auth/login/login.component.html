@@ -1,0 +1,15 @@
+<h2>Se connecter</h2>
+<form [formGroup]="form" class="d-flex flex-column">
+	<mat-form-field>
+		<mat-label>E-mail</mat-label>
+		<input type="email" matInput formControlName="email">
+	</mat-form-field>
+	<mat-form-field>
+		<mat-label>Mot de passe</mat-label>
+		<input matInput type="password" formControlName="password">
+	</mat-form-field>
+</form>
+<div class="d-flex">
+	<button class="btn btn-primary w-100" (click)="login()" [disabled]="form.invalid">LOGIN</button>
+	<button class="btn btn-outline-primary w-100" (click)="registerPopup()">REGISTER</button>
+</div>

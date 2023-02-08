@@ -1,0 +1,33 @@
+<h2>Liste des utilisateurs</h2>
+
+<div class="row">
+	<div class="col-12 col-md-6 col-lg-4 col-xl-3" *ngFor="let user of users">
+		<mat-card class="h-100">
+			<mat-card-header>
+				<mat-card-title>
+					{{ user.pseudo }}<br>
+					<small>(dernière connexion: {{ user.last_login | date: "d/M/Y H:m:s" }})</small>
+				</mat-card-title>
+			</mat-card-header>
+			<img mat-card-image [src]="assetsUrl + user.url_image">
+			<mat-card-content>
+				<mat-label>Role</mat-label>
+				<mat-form-field appearance="fill">
+					<mat-select [(ngModel)]="user.role_id">
+					  <mat-option [value]="100">Administrateur</mat-option>
+					  <mat-option [value]="50">Visiteur</mat-option>
+					  <mat-option [value]="10">Banni</mat-option>
+					</mat-select>
+				  </mat-form-field>
+			</mat-card-content>
+			<mat-card-actions>
+				<button mat-raised-button color="primary" (click)="updateRole(user)">
+					Modifier le role
+				</button>
+				<button mat-raised-button color="danger" (click)="deleteUser(user.id)">
+					Supprimer l'utilistateur
+				</button>
+			</mat-card-actions>
+		</mat-card>
+	</div>
+</div>
