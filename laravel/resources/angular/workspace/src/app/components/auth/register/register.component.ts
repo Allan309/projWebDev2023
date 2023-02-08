@@ -19,6 +19,7 @@ import { Subscription } from 'rxjs';
 import { AuthService } from 'src/app/services/auth.service';
 import { ToasterService } from 'src/app/services/toaster.service';
 import { b64toBlob } from 'src/app/utils/b64toBlob';
+import { matchValidator } from 'src/app/utils/validator_match';
 
 @Component({
 	selector: 'app-register',
@@ -33,8 +34,8 @@ export class RegisterComponent implements OnInit, OnDestroy {
 	form: FormGroup = new FormGroup({
 		pseudo: new FormControl('', [Validators.required, Validators.maxLength(30)]),
 		email: new FormControl('', [Validators.required, Validators.email]),
-		password: new FormControl('', [Validators.required, Validators.minLength(8)]),
-		passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(8)]),
+		password: new FormControl('', [Validators.required, Validators.minLength(8), matchValidator('passwordConfirm', true)]),
+		passwordConfirm: new FormControl('', [Validators.required, Validators.minLength(8), matchValidator('password')]),
 		nom: new FormControl('', [Validators.required, Validators.maxLength(30)]),
 		prenom: new FormControl('', [Validators.required, Validators.maxLength(30)]),
 		nationalite: new FormControl('', [Validators.required]),
@@ -71,3 +72,4 @@ export class RegisterComponent implements OnInit, OnDestroy {
 		})
 	}
 }
+

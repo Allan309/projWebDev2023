@@ -64,6 +64,15 @@ class AuthController extends Controller
 		]);
 
 		try {
+
+			if(User::where('email', $request->get('email'))->exists()) {
+				return abort(500, "Cet e-mail existe déja");
+			}
+			if(User::where('pseudo', $request->get('pseudo'))->exists()) {
+				return abort(500, "Ce pseudo existe déja");
+			}
+
+
 			$url_img = "storage/avatars/default_avatar.jpg";
 			try {
 				$user = User::create([

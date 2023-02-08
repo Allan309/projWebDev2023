@@ -76,9 +76,7 @@ class AdController extends Controller
 			];
 			if($request->get("id") == 0) {
 				$valueToChange["user_id"] = auth()->user()->id;
-				if($request->get("setDeflautImage")) {
-					$valueToChange["url_image"] = $url_img;
-				}
+				$valueToChange["url_image"] = $url_img;
 			}
 			$ad = Ad::updateOrCreate([
 				"id" => $request->get("id")
