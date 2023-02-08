@@ -1,19 +1,13 @@
-<nav class="navbar navbar-expand-lg bg-light">
-	<a class="navbar-brand" href="/">AutoAllan24</a>
-	<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-		<span class="navbar-toggler-icon"></span>
-	</button>
+<nav class="navbar navbar-expand bg-light mb-2">
+	<a class="ms-2 navbar-brand" href="/">AutoAllan24</a>
+
 	<div class="collapse navbar-collapse" id="navbarNav">
-		<ul class="navbar-nav">
-			<li class="nav-item">
-				<a class="nav-link" [routerLink]="'/ad'">Annonces</a>
-			</li>
-		</ul>
 		<div *ngIf="tokenUser" class="w-100 text-end">
 			{{ tokenUser.user.pseudo }}
 			<img [src]="assetsUrl + tokenUser.user.url_image" style="height:50px" class="ms-2" mat-button [matMenuTriggerFor]="menu">
 			<mat-menu #menu="matMenu">
 			  <button mat-menu-item (click)="gotoProfile()">Profil</button>
+			  <button mat-menu-item  *ngIf="isAdmin" (click)="gotoGestAdmin()">Gestion admin</button>
 			  <button mat-menu-item (click)="gotoAds()">Mes annonces</button>
 			  <button mat-menu-item (click)="logout()">Déconnexion</button>
 			</mat-menu>

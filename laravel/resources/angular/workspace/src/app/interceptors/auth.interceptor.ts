@@ -29,7 +29,6 @@ export class AuthInterceptor implements HttpInterceptor {
 		var authUser = this.authService.getTokenUser();
 		let handle = next.handle(req);
 		if(authUser) {
-			console.log(authUser);
 			if (authUser?.access_token) {
 				const tokenUser: any = JWT<{}>(authUser.access_token);
 				const tokenExpired =

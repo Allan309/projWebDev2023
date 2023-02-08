@@ -22,6 +22,7 @@ import { Subscription } from 'rxjs';
 })
 export class FooterComponent implements OnInit, OnDestroy {
 	private subs: Subscription[] = [];
+	currYear = new Date().getFullYear();
 
 	constructor(public dialog: MatDialog) {}
 

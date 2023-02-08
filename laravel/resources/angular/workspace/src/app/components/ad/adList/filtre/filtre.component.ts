@@ -21,6 +21,7 @@ import { TokenUser } from 'src/app/models/TokenUser';
 import { AdService } from 'src/app/services/ad.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { environment } from 'src/environments/environment';
+import { saveAs } from 'file-saver';
 
 @Component({
 	selector: 'app-ad-list-filtre',
@@ -55,8 +56,13 @@ export class AdListFiltreComponent implements OnInit, OnDestroy {
 	constructor(private authService: AuthService, private adService: AdService, private router: Router, private activatedRoute: ActivatedRoute) {}
 
 	ngOnInit() {
-		this.userId = +(this.activatedRoute.snapshot.params["user"] ?? "0");
-		this.filter();
+		
+		this.subs.push(
+			this.activatedRoute.params.subscribe(_ => {
+				this.userId = +(_["user"] ?? "0");
+				this.filter();
+			})
+		)
 	}
 
 	filter() {
@@ -71,6 +77,13 @@ export class AdListFiltreComponent implements OnInit, OnDestroy {
 	ngOnDestroy(): void {
 		this.subs.forEach((sub) => {
 			sub.unsubscribe();
+		});
+	}
+
+	dlButton() {
+		this.adService.getList(this.form.value, this.userId).subscribe((_: any) => {
+			const blob = new Blob([JSON.stringify(_)], {type: "application/json;charset=utf-8"});
+			saveAs(blob, "ads.json");
 		});
 	}
 }

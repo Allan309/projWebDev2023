@@ -9,6 +9,7 @@
 		<input matInput type="password" formControlName="password">
 	</mat-form-field>
 </form>
-
-<button class="btn btn-primary" (click)="login()"
-[disabled]="form.invalid">LOGIN</button>
+<div class="d-flex">
+	<button class="btn btn-primary w-100" (click)="login()" [disabled]="form.invalid">LOGIN</button>
+	<button class="btn btn-outline-primary w-100" (click)="registerPopup()">REGISTER</button>
+</div>

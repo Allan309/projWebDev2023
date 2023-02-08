@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\GestAdminController;
 
 /*
 |--------------------------------------------------------------------------
@@ -28,12 +29,12 @@ Route::group(['middleware' => 'jwt.auth'], function () {
 
 Route::group(['prefix' => "ad"], function () {
 	Route::POST("", [AdController::class, "get"]);
-	Route::POST("byUser/{userId}", [AdController::class, "get"])->where('userId', '[0-9]+');;
-	Route::GET("byId/{ad}", [AdController::class, "getById"])->where('ad', '[0-9]+');;
+	Route::POST("byUser/{userId}", [AdController::class, "get"])->where('userId', '[0-9]+');
+	Route::GET("byId/{ad}", [AdController::class, "getById"])->where('ad', '[0-9]+');
 	Route::group(['middleware' => 'jwt.auth'], function () {
 		Route::PUT("insertOrUpdate", [AdController::class, "insertOrUpdate"]);
-		Route::post("addImage/{ad}", [AdController::class, "addImage"])->where('ad', '[0-9]+');;
-		Route::DELETE("{ad}", [AdController::class, "delete"])->where('ad', '[0-9]+');;
+		Route::post("addImage/{ad}", [AdController::class, "addImage"])->where('ad', '[0-9]+');
+		Route::DELETE("{ad}", [AdController::class, "delete"])->where('ad', '[0-9]+');
 	});
 });
 
@@ -42,5 +43,14 @@ Route::group(['prefix' => "user"], function () {
 		Route::PUT("", [UserController::class, "update"]);
 		Route::post("addImage", [UserController::class, "addImage"]);
 		Route::DELETE("", [UserController::class, "delete"]);
+	});
+});
+
+//////////////
+Route::group(['prefix' => "gestAdmin"], function () {
+	Route::group(['middleware' => ['jwt.auth', "admin"]], function () {
+		Route::get("users", [GestAdminController::class, "getUsers"]);
+		Route::put("setRole/{user_id}", [GestAdminController::class, "setRole"])->where('user_id', '[0-9]+');
+		Route::DELETE("{user_id}", [GestAdminController::class, "deleteUser"])->where('user_id', '[0-9]+');
 	});
 });

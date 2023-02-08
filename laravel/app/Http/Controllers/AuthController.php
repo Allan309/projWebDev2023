@@ -35,6 +35,9 @@ class AuthController extends Controller
 			if(!$token = auth()->login($user)){
 				return response()->json(['error' => 'Unauthorized'], 500);
 			}
+			$user->update([
+				"last_login" => Carbon::now(),
+			]);
 			return response()->json($this->createNewToken($token));
 		} catch (Throwable $th) {
 			if (config("app.debug")) {
@@ -74,7 +77,8 @@ class AuthController extends Controller
 					"tel" => $request->get("tel"),
 					"date_naissance" => Carbon::createFromFormat("d/m/Y", $request->string("date_naissance")),
 					"url_image" => $url_img,
-					"role_id" => RoleEnum::INVITE
+					"role_id" => RoleEnum::INVITE,
+					"last_login" => Carbon::now(),
 				]);
 				return response()->json($user);
 			} catch (Throwable $th) {

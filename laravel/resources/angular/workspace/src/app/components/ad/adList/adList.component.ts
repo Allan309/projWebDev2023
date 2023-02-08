@@ -13,7 +13,7 @@ import {
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent } from '@angular/material/chips';
 import { MatDialog } from '@angular/material/dialog';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { Ad } from 'src/app/models/Ad';
 import { TokenUser } from 'src/app/models/TokenUser';
@@ -31,11 +31,17 @@ export class AdListComponent implements OnInit, OnDestroy {
 	assetsUrl = environment.assetsUrl;
 	ads: Ad[] = [];
 	isConnected = false;
+	userId = 0;
 
-	constructor(private authService: AuthService, private adService: AdService, private router: Router) {}
+	constructor(private activatedRoute: ActivatedRoute, private authService: AuthService, private adService: AdService, private router: Router) {}
 
 	ngOnInit() {
 		this.isConnected = !!this.authService.getTokenUser();
+		this.subs.push(
+			this.activatedRoute.params.subscribe((_: any) => {
+				this.userId = +(_["user"] ?? "0");
+			})
+		)
 	}
 
 	ngOnDestroy(): void {

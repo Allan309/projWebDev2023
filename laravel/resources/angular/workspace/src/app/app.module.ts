@@ -7,7 +7,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MaterialImportModule } from './modules/material.module';
 import { HeaderComponent } from './components/header/header.component';
 import { FooterComponent } from './components/footer/footer.component';
-import { HomeComponent } from './components/home/home.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule, ReactiveFormsModule }   from '@angular/forms';
 import { AuthComponent } from './components/auth/auth.component';
@@ -25,6 +24,8 @@ import { AdListComponent } from './components/ad/adList/adList.component';
 import { AdShowComponent } from './components/ad/show/show.component';
 import { UserEditComponent } from './components/user/edit/edit.component';
 import { AdListFiltreComponent } from './components/ad/adList/filtre/filtre.component';
+import { GestAdminComponent } from './components/gestAdmin/gestAdmin.component';
+import { BanComponent } from './components/ban/ban.component';
 
 library.add(fas, far, fab);
 
@@ -34,7 +35,6 @@ library.add(fas, far, fab);
     HeaderComponent,
     FooterComponent,
     LoginComponent,
-    HomeComponent,
     RegisterComponent,
     AuthComponent,
     SnackbarComponent,
@@ -42,7 +42,9 @@ library.add(fas, far, fab);
     AdListComponent,
     AdShowComponent,
     UserEditComponent,
-    AdListFiltreComponent
+    AdListFiltreComponent,
+    GestAdminComponent,
+    BanComponent
   ],
   imports: [
     BrowserModule,

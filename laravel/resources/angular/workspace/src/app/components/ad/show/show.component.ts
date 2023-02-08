@@ -38,13 +38,16 @@ export class AdShowComponent implements OnInit, OnDestroy {
 
 	ngOnInit() {
 		this.tokenUser = this.authService.getTokenUser();
-		var id = +(this.activatedRoute.snapshot.params['id'] ?? "0");
-		var sub = this.adService.getById(id).subscribe(_ => {
-			this.ad = _;
-			console.log(this.tokenUser?.user);
-			this.isCreator = this.tokenUser != undefined && (this.tokenUser?.user.id == _.user_id || this.tokenUser.user.role.id == RoleEnum.ADMINISTRATEUR)
-			sub.unsubscribe();
-		})
+		this.subs.push(
+			this.activatedRoute.params.subscribe(_ => {
+				var id = +(_['id'] ?? "0");
+				var sub = this.adService.getById(id).subscribe(_ => {
+					this.ad = _;
+					this.isCreator = this.tokenUser != undefined && (this.tokenUser?.user.id == _.user_id || this.tokenUser.user.role.id == RoleEnum.ADMINISTRATEUR)
+					sub.unsubscribe();
+				})
+			})
+		)
 	}
 
 	gotoEdit() {
