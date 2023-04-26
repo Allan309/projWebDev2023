@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Database\Seeders\UserSeeder;
 
 return new class extends Migration
 {
@@ -25,9 +26,12 @@ return new class extends Migration
             $table->string("tel", 11);
             $table->date("date_naissance");
             $table->string("url_image");
-            $table->boolean("isAdmin");
+            $table->foreignId("role_id")->constrained("roles");
+            $table->date('last_login');
             $table->timestamps();
         });
+
+        UserSeeder::run();
     }
 
     /**

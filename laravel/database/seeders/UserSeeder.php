@@ -11,7 +11,7 @@ use App\Models\RoleEnum;
 
 class UserSeeder extends Seeder
 {
-    public function run()
+    public static function run()
     {
 		DB::table('user')->insert([
 			'pseudo' => 'admin',

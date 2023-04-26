@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Database\Seeders\RoleSeeder;
 
 return new class extends Migration
 {
@@ -17,11 +18,7 @@ return new class extends Migration
             $table->id();
             $table->string("name", 50);
         });
-
-        Schema::table('user', function (Blueprint $table) {
-            $table->foreignId("role_id");
-            $table->dropColumn("isAdmin");
-        });
+        RoleSeeder::run();
     }
 
     /**
@@ -32,9 +29,5 @@ return new class extends Migration
     public function down()
     {
         Schema::dropIfExists('roles');
-        Schema::table('user', function (Blueprint $table) {
-            $table->boolean("isAdmin");
-            $table->dropColumn("role_id");
-        });
     }
 };
