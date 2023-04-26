@@ -47,9 +47,8 @@ class AdController extends Controller
 	}
 
 	public function getByUser($userId) {
-		$ads = Ad::where("user_id", $userId)->get();
-		$ad->load("user");
-		return response()->json($ad);
+		$ads = Ad::with("user")->where("user_id", $userId)->get();
+		return response()->json($ads);
 	}
 
 	public function insertOrUpdate(Request $request) {

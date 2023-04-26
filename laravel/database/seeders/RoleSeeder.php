@@ -9,7 +9,7 @@ use Illuminate\Support\Str;
  
 class RoleSeeder extends Seeder
 {
-    public function run()
+    public static function run()
     {
         DB::table('roles')->insert([
             'id' => 100,
